@@ -1,5 +1,7 @@
 {include file="header.tpl"}
 
+{include file='calendarSelect.tpl'}
+
 <main>
     <table class="calendar">
         <thead>
@@ -17,12 +19,17 @@
             {for $offset=1 to $calOffset}
                 <td class="offset-day"></td>
             {/for}
+
             {for $day=1 to $monthDays}
                 {if ($day+$calOffset-1) % 7 eq 0}
                     </tr>
                     <tr>
                 {/if}
-                <td class="calendar-day">{$day}</td>
+                {if isset($eventDays[$day])}
+                    <td class="calendar-day has-event" style="background-color:#{$eventDays[$day]}">{$day}</td>
+                {else}
+                    <td class="calendar-day">{$day}</td>
+                {/if}
             {/for}
             </tr>
         </tbody>

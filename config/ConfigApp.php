@@ -10,8 +10,8 @@ class ConfigApp
     public static $ACTION = 'action';
     public static $PARAMS = 'params';
     public static $ACTIONS = [
-        '' => 'calendarController#buildCalendarStructure',
-        'home' => 'calendarController#buildCalendarStructure'
+        '' => 'calendarController#home',
+        'home' => 'calendarController#home'
     ];
 
 }
