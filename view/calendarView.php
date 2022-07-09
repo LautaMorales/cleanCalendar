@@ -13,10 +13,13 @@ class calendarView {
         $this->smarty->assign('calendars', $calendars);
     }
 
-    function renderCalendar($firstDayOffset, $daysInMonth, $dayArray, $events, $calendar, $eventDays) {
+    function assignEvents($events) {
+        $this->smarty->assign('events', $events);
+    }
+
+    function renderCalendar($firstDayOffset, $daysInMonth, $dayArray, $calendar, $eventDays) {
         $this->smarty->assign('calendar', $calendar);
         $this->smarty->assign('eventDays', $eventDays);
-        $this->smarty->assign('events', $events);
         $this->smarty->assign('dayArray', $dayArray);
         $this->smarty->assign('calOffset', $firstDayOffset);
         $this->smarty->assign('monthDays', $daysInMonth);

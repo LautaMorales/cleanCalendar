@@ -13,9 +13,6 @@ class calendarController {
     }
 
     function home() {
-        //gets first calendar in table and events on current month
-        $dayArray = $this->getDayArray();
-
         //timey stuff
         $daysInMonth = date('t');
         $currentMonth = date('m');
@@ -24,33 +21,32 @@ class calendarController {
         $calendar = $this->calendarModel->getFirstCalendar();
         $calendarNames = $this->calendarModel->getCalendarNames();
         $events = $this->eventModel->getEventsByMonth($calendar->calendar_id, $currentMonth);
-
-        $eventDays = array();
-
-        foreach ($events as $event) {
-            $day = DateTime::createFromFormat('Y-m-d', $event->start_date)->format('d');
-            $eventDays[$day] = $event->color;
-            //array_push($eventDays, DateTime::createFromFormat('Y-m-d', $event->start_date)->format('d'), $event->color);
-        }
+        
+        $eventDays = $this->getEventDaysArray($events);
 
         $this->view->assignCalendarNamesSelect($calendarNames);
+        $this->view->assignEvents($events);
         
-        $this->buildCalendarStructure($calendar, $events, $daysInMonth, $eventDays);
+        $this->buildCalendarStructure($calendar, $daysInMonth, $eventDays);
     }
 
-    function test($calendarName, $month) {
+    function buildCalendarStructure($calendar, $daysInMonth, $eventDays) {
         $dayArray = $this->getDayArray();
-        $calendar = $this->calendarModel->getCalendar($calendarName);
-        $events = $this->eventModel->getEventsByMonth($calendar->calendar_id, $month);
+        $this->view->renderCalendar(2, $daysInMonth, $dayArray, $calendar, $eventDays);
     }
 
-    function getDayArray() {
+    private function getEventDaysArray($events) {
+        $eventDays = array();
+        foreach ($events as $event) {
+            $day = DateTime::createFromFormat('Y-m-d', $event->start_date)->format('d');
+            if (!isset($events[$day]))
+                $eventDays[$day] = $event->color;
+        }
+        return $eventDays;
+    }
+
+    private function getDayArray() {
         return array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
-    }
-
-    function buildCalendarStructure($calendar, $events, $daysInMonth, $eventDays) {
-        $dayArray = $this->getDayArray();
-        $this->view->renderCalendar(2, $daysInMonth, $dayArray, $events, $calendar, $eventDays);
     }
 
 }

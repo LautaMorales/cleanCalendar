@@ -2,7 +2,7 @@
 
 {include file='calendarSelect.tpl'}
 
-<main>
+<div class="main-container">
     <table class="calendar">
         <thead>
             {for $day=0 to 6}
@@ -34,6 +34,8 @@
             </tr>
         </tbody>
     </table>
-</main>
+</div>
+
+{include file="eventList.tpl"}
 
 {include file="footer.tpl"}

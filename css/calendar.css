@@ -37,7 +37,7 @@
     background-color: white;
 }
 
-main {
+.main-container {
     display: flex;
     justify-content: center;
     align-items: center;
