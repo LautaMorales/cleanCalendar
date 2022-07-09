@@ -15,9 +15,10 @@ class eventModel {
         return $events;
     }
 
-    function getEventsByMonth($cal_id, $month) {
-        $query = $this->db->prepare('SELECT * FROM event where event.calendar_id = ? AND extract(month FROM event.start_date) = ?');
-        $query->execute(array($cal_id, $month));
+    function getEventsByMonth($cal_id, $month, $year) {
+        $query = $this->db->prepare('SELECT * FROM event where event.calendar_id = ? AND extract(month FROM event.start_date) = ?
+                    AND extract(year FROM event.start_date) = ?');
+        $query->execute(array($cal_id, $month, $year));
         $events = $query->fetchAll(PDO::FETCH_OBJ);
         return $events;
     }

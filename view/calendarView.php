@@ -7,6 +7,7 @@ class calendarView {
     //start up smarty
     function __construct() {
         $this->smarty = new Smarty();
+        $this->smarty->assign('basehref', BASE_URL);
     }
 
     function assignCalendarNamesSelect($calendars) {

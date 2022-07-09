@@ -12,27 +12,38 @@ class calendarController {
         $this->calendarModel = new calendarModel();
     }
 
-    function home() {
-        //timey stuff
-        $daysInMonth = date('t');
-        $currentMonth = date('m');
-        $currentYear = date('Y');
-        $offset = DateTime::createFromFormat('d-m-Y', '1'.'-'.$currentMonth.'-'.$currentYear)->format('N');        
+    function getCalendarAndEvents($params = null) {
+        //checking for calendar name
+        if (isset($_POST['calendar-select'])) {
+            $cal_name = $_POST['calendar-select'];
+            $calendar = $this->calendarModel->getCalendar($cal_name);
+        } else
+            $calendar = $this->calendarModel->getFirstCalendar();
+        //checking for month and year
+        if (isset($params[0]) && $params[0] < 13 && $params[0] > 0) {
+            $month = DateTime::createFromFormat('n', $params[0])->format('m');
+        } else
+            $month = date('m');
+        if (isset($params[1]) && $params[1] < 2100 && $params[1] > 1900) {
+            $year = $params[1];
+        } else
+            $year = date('Y');
 
-        //calendar get got
-        $calendar = $this->calendarModel->getFirstCalendar();
-        $calendarNames = $this->calendarModel->getCalendarNames();
-        $events = $this->eventModel->getEventsByMonth($calendar->calendar_id, $currentMonth);
+        //days in month and how many empty cells I need
+        $daysInMonth = date('t');           
+        $offset = DateTime::createFromFormat('d-m-Y', '1'.'-'.$month.'-'.$year)->format('N');
+        if ($offset >= 7)
+            $offset -= 7;        
         
+        $events = $this->eventModel->getEventsByMonth($calendar->calendar_id, $month, $year);
+        $calendarNames = $this->calendarModel->getCalendarNames();
         $eventDays = $this->getEventDaysArray($events);
-
+        
         $this->view->assignCalendarNamesSelect($calendarNames);
         $this->view->assignEvents($events);
+
         
         $this->buildCalendarStructure($offset, $calendar, $daysInMonth, $eventDays);
-    }
-
-    function getCalendarAndEvents($cal_name, $month, $year) {
         
     }
 
