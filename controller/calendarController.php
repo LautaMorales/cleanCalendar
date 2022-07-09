@@ -16,6 +16,8 @@ class calendarController {
         //timey stuff
         $daysInMonth = date('t');
         $currentMonth = date('m');
+        $currentYear = date('Y');
+        $offset = DateTime::createFromFormat('d-m-Y', '1'.'-'.$currentMonth.'-'.$currentYear)->format('N');        
 
         //calendar get got
         $calendar = $this->calendarModel->getFirstCalendar();
@@ -27,12 +29,16 @@ class calendarController {
         $this->view->assignCalendarNamesSelect($calendarNames);
         $this->view->assignEvents($events);
         
-        $this->buildCalendarStructure($calendar, $daysInMonth, $eventDays);
+        $this->buildCalendarStructure($offset, $calendar, $daysInMonth, $eventDays);
     }
 
-    function buildCalendarStructure($calendar, $daysInMonth, $eventDays) {
+    function getCalendarAndEvents($cal_name, $month, $year) {
+        
+    }
+
+    function buildCalendarStructure($offset, $calendar, $daysInMonth, $eventDays) {
         $dayArray = $this->getDayArray();
-        $this->view->renderCalendar(2, $daysInMonth, $dayArray, $calendar, $eventDays);
+        $this->view->renderCalendar($offset, $daysInMonth, $dayArray, $calendar, $eventDays);
     }
 
     private function getEventDaysArray($events) {
@@ -46,7 +52,11 @@ class calendarController {
     }
 
     private function getDayArray() {
-        return array('Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+        return $dayArray = array( 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat');
+        // while ($dayArray[0] != $firstDayOfTheMonth) {
+        //     array_unshift($dayArray, array_shift($dayArray));
+        // }
+        // return $dayArray;
     }
 
 }
