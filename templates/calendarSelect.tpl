@@ -1,5 +1,5 @@
 <div>
-    <form action="">
+    <form method="POST">
     <select name="calendar-select">
     {foreach from=$calendars item=$calendar}
         <option value="{$calendar->name}">{$calendar->name}</option>
