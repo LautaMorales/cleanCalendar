@@ -1,0 +1,8 @@
+.event-list {
+    list-style: none;
+}
+
+.event-list li {
+    padding-left: 10px; 
+    width: 50%;
+}

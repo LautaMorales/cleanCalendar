@@ -3,6 +3,7 @@
 {include file='calendarSelect.tpl'}
 
 <div class="main-container">
+    <h1>{$calendar->name}</h1>
     <table class="calendar">
         <thead>
             {for $day=0 to 6}
